@@ -1,0 +1,24 @@
+
+# #!TODO: Get stuff from git
+
+source $HOME/.config/.bash_functions # and custom autocompletes
+source $HOME/.config/.bash_aliases # aliases 
+source $HOME/.config/.bash_bindings # bindings 
+
+export EDITOR="/bin/nvim"
+
+export HISTSIZE=20000
+HISTIGNORE="&:ls:??:exit:pwd:clear:[ \t]*"
+
+# add local Rust path. Might be only path as far as I know.
+#export PATH="$PATH:${HOME}/.cargo/bin/" # oh this one already added?
+# add Ruby paths. Second is empty but whatever
+#export PATH="$PATH:/usr/lib/ruby/gems/3.1.0/bin/:$PWD/.local/share/gem/ruby/3.1.0"
+PATH="$PATH:$HOME/.local/bin"
+PATH="$PATH:$HOME/All_Code_Folder/IntelFPGA_lite/quartus/bin"
+
+# customizing the prompt
+PS1='\[\e[0;37m\][\u\[\e[2;32m\] \[\e[0;37m\]\h \W]\$ ' 
+
+# added by cargo once
+. "$HOME/.cargo/env" 

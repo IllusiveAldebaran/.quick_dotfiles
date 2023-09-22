@@ -1,0 +1,4 @@
+# unbind C-m to ls
+bind -r '\C-j'
+bind '"\C-j":"ls\r"' 
+# notice it's \r because on linux. Some guides may say \n
