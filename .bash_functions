@@ -21,6 +21,15 @@ function screen_read(){
 
 function gdiff(){
   set -euo pipefail
+  # TODO check if there exists .git/
+
+  if [[ ! -d .git/ ]]; then
+    echo Not in a git repo. Exiting...
+    return
+  fi
+
+
+
   # create an array of the commits
   commit_arr=($(git log --oneline | awk '{print $1}'))
 
@@ -29,22 +38,25 @@ function gdiff(){
   baseC=${commit_arr[1]}
 
   choice="checkdiff"
+
+
   
 
   # loop that gives options: quit, change end or start.
   echo "> git diff ${baseC} ${recentC}"
   echo -n "Options? Change commits [[f]irst/[l]ast/[c]ontinue/[q]uit]: "
   read -r checkdiff
-  while [[ -n $stay ]] do
+  while [[ -n $stay ]]; do
+    #
     #for i in "${commit_arr[@]}"; do
     git diff --color ${baseC} ${recentC} | less -R
 
     
     # choose to change start and or end commits
 
-    # if [[ ans = 'first' ]]
-    #
-    # fi
+    if [[ ${ans:0:1} == 'f' ]]; then
+      echo 'Change first'
+    fi
 
     # pick new stuff
     stay=""
@@ -52,6 +64,8 @@ function gdiff(){
     read -r ans
   done
 
+
+  return
 
 }
 
