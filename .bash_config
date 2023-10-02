@@ -21,4 +21,6 @@ PATH="$PATH:$HOME/All_Code_Folder/IntelFPGA_lite/quartus/bin"
 PS1='\[\e[0;37m\][\u\[\e[2;32m\] \[\e[0;37m\]\h \W]\$ ' 
 
 # added by cargo once
-. "$HOME/.cargo/env" 
+if [[ -d "$HOME/.cargo/env" ]]; do
+  . "$HOME/.cargo/env" 
+fi
