@@ -24,3 +24,22 @@ PS1='\[\e[0;37m\][\u\[\e[2;32m\] \[\e[0;37m\]\h \W]\$ '
 if [[ -d "$HOME/.cargo/env" ]]; then
   . "$HOME/.cargo/env" 
 fi
+# bash
+
+
+if [[ ! -d ~/.config/script-collection ]]; then
+  mkdir ~/.config/script-collection
+fi
+
+# check if it already has scripts inside. Check if it is not empty.
+if ! ls ~/.config/script-collection/* &> /dev/null ; then
+  if [[ -d ~/All_Code_Folder ]] && [[ -d ~/All_Code_Folder/bash_scripts ]]; then
+    seq=$(find ~/All_Code_Folder/bash_scripts/ -maxdepth 2 -type f -name '*.sh')
+
+    for i in $seq; do
+      ln -s $i ~/.config/script-collection/
+    done
+  fi
+fi
+
+PATH="$PATH:$HOME/.config/script-collection"

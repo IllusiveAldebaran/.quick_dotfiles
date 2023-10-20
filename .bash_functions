@@ -69,7 +69,21 @@ function gdiff(){
 
 }
 
+# requires browser-sync, installed with npm
+function sync-html(){
+  browser-sync start --server --files $1 --startPath $1
+}
 
 function watch_wifi(){
 	watch -n1 "awk 'NR==3 {print \"WiFi Signal Strength = \" \$3 \"00 %\"}''' /proc/net/wireless"
+}
+
+
+function ssh(){
+  TERM=xterm-256color;
+  if [[ -z $SSH_AUTH_SOCK ]]; then
+    eval "$(ssh-agent -s)"
+    ssh-add ~/.ssh/id_rsa
+  fi
+  command ssh "$@"
 }
