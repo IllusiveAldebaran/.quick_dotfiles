@@ -8,7 +8,7 @@ source $HOME/.config/.bash_bindings # bindings
 export EDITOR="/bin/nvim"
 
 export HISTSIZE=20000
-HISTIGNORE="&:ls:exit:pwd:clear:[ \t]*"
+HISTIGNORE="&:ls:exit:pwd:clear:"
 
 # add local Rust path. Might be only path as far as I know.
 #export PATH="$PATH:${HOME}/.cargo/bin/" # oh this one already added?
