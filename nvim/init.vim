@@ -8,6 +8,9 @@ set shiftwidth=2
 
 lua require('plugins')
 
+" for buffers
+nnoremap gb :ls<CR>:b<Space>
+
 " command Browsersync :!browser-sync start --server --files 
 " command Browsersync :!browser-sync start --server --files *.html --startPath *.html & 
 " example online form reddit
