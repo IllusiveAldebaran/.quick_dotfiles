@@ -10,11 +10,30 @@ function screenshot(){
     #rm $WAYSHOT_TMP
 }
 
+# Needs to be called with quotation marks around url, and only call with one url at a time followed by genres
+# Ex: add-song "https://music.youtube.com/watch?v=2-LQqnyNYiQ&si=4X3DpDq_MEIBlCf1" anime
+function add-song(){
+  
+  dir0="random"
+
+  if [[ $# -gt 1 && -d ~/Audio/Music/"$2" ]]; then
+      dir0="$2"
+  fi
+
+  printf "Putting song in $2 directory\n"
+
+  (
+  cd ~/Audio/Music/$dir0
+  yt-dlp --extract-audio --audio-format mp3 --audio-quality 0 "$1"
+  )
+}
+
 function screen_read(){
-    wayshot -s "$(slurp)"
-    mv *wayshot.png /tmp/
-    tesseract-ocr /tmp/*wayshot.png stdout -l eng | wl-copy
-    rm /tmp/*wayshot.png
+    filetmp=$(mktemp -t wayshot-XXXX.png)
+    wayshot -s "$(slurp)" 
+    mv [0-9]*-wayshot.png $filetmp
+    tesseract-ocr $filetmp stdout -l eng | wl-copy
+    rm $filetmp
 
 
 }
@@ -82,8 +101,8 @@ function watch_wifi(){
 function ssh(){
   TERM=xterm-256color;
   if [[ -z $SSH_AUTH_SOCK ]]; then
-    eval "$(ssh-agent -s)"
-    ssh-add ~/.ssh/id_rsa
+    eval "$(ssh-agent -s)" > /dev/null
+    ssh-add ~/.ssh/id_rsa 2> /dev/null
   fi
   command ssh "$@"
 }

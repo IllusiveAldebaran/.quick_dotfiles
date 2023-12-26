@@ -7,7 +7,7 @@ source $HOME/.config/.bash_bindings # bindings
 
 export EDITOR="/bin/nvim"
 
-export HISTSIZE=20000
+export HISTSIZE=2000000
 HISTIGNORE="&:ls:exit:pwd:clear"
 
 # allows to search forward with <C-s>
@@ -19,6 +19,8 @@ stty -ixon
 #export PATH="$PATH:/usr/lib/ruby/gems/3.1.0/bin/:$PWD/.local/share/gem/ruby/3.1.0"
 PATH="$PATH:$HOME/.local/bin"
 PATH="$PATH:$HOME/All_Code_Folder/IntelFPGA_lite/quartus/bin"
+# Ruby Gems
+PATH="$PATH:/usr/lib/ruby/gems/3.2.0/bin"
 
 # customizing the prompt
 PS1='\[\e[0;37m\][\u\[\e[2;32m\] \[\e[0;37m\]\h \W]\$ ' 
@@ -37,11 +39,37 @@ fi
 # check if it already has scripts inside. Check if it is not empty.
 if ! ls ~/.config/script-collection/* &> /dev/null ; then
   if [[ -d ~/All_Code_Folder ]] && [[ -d ~/All_Code_Folder/bash_scripts ]]; then
-    seq=$(find ~/All_Code_Folder/bash_scripts/ -maxdepth 2 -type f -name '*.sh')
+    seq=$(find ~/All_Code_Folder/bash_scripts/ -maxdepth 3 -type f -name '*.sh')
 
     for i in $seq; do
       ln -s $i ~/.config/script-collection/
     done
+
+
+    # make functions for the sake of dmenu
+    # These are in ~/.config/.bash_functions
+
+    input_file="$HOME/.config/.bash_functions"
+
+    # Check if the input file exists
+    if [ ! -f "$input_file" ]; then
+      echo "Error: Input file '$input_file' not found."
+      return 1
+    fi
+    # Extract function names and contents
+    functions=$(awk '/^function / {print $2}' "$input_file" | cut -f 1 -d "(" )
+
+    # Create a script file for each function
+    while IFS= read -r function_name; do
+      script_name="$function_name.sh"
+      printf "#!/bin/bash\n" > ~/.config/script-collection/$script_name
+
+      awk -v f_name="function $function_name" 'found && /^}/ {exit}; found {print}; $0 ~ f_name {found=1;}' $input_file >> ~/.config/script-collection/$script_name
+
+
+    done <<< "$functions"
+
+    chmod +x ~/.config/script-collection/*
   fi
 fi
 
