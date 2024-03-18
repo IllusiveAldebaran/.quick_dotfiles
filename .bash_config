@@ -23,7 +23,9 @@ PATH="$PATH:$HOME/All_Code_Folder/IntelFPGA_lite/quartus/bin"
 PATH="$PATH:/usr/lib/ruby/gems/3.2.0/bin"
 
 # customizing the prompt
-PS1='\[\e[0;37m\][\u\[\e[2;32m\] \[\e[0;37m\]\h \W]\$ ' 
+#PS1='\[\e[0;37;48;2;0;77;77m\][\[\u\[\e[2;32;48;2;0;77;77m\] \[\e[0;37;48;2;0;77;77m\]\h \W]\[\e[0;37m\]\$ ' 
+#PS1='\[\e[0;37;48;2;0;77;77m\][\[\u\[\e[2;32;48;2;0;77;77m\] \[\e[0;37;48;2;0;77;77m\]\h \W]\[\e[0;37m\]\$ ' 
+PS1='[\u\[\e[0;32m\] \[\e[0m\]\h \W]\$ '
 
 # added by cargo once
 if [[ -d "$HOME/.cargo/env" ]]; then
@@ -74,3 +76,6 @@ if ! ls ~/.config/script-collection/* &> /dev/null ; then
 fi
 
 PATH="$PATH:$HOME/.config/script-collection"
+export MANPAGER='nvim +Man!'
+#export MANPAGER="less -R --use-color -Dd+r -Du+b"
+#MANPAGER="sh -c 'col -bx | bat -l man -p'" # bat

@@ -13,6 +13,9 @@ function screenshot(){
 # Needs to be called with quotation marks around url, and only call with one url at a time followed by genres
 # Ex: add-song "https://music.youtube.com/watch?v=2-LQqnyNYiQ&si=4X3DpDq_MEIBlCf1" anime
 function add-song(){
+  # For adding a playlist: youtube-dl -o "%(playlist_index)s-%(title)s.%(ext)s"
+  # Also try to add --embed-metadata later
+  # yt-dlp --extract-audio --embed-metadata --audio-format mp3 --audio-quality 0 -o "%(playlist_index)s-%(title)s.%(ext)s" "$1"
   
   dir0="random"
 
@@ -20,11 +23,11 @@ function add-song(){
       dir0="$2"
   fi
 
-  printf "Putting song in $2 directory\n"
+  printf "Putting song in ${dir0} directory\n"
 
   (
   cd ~/Audio/Music/$dir0
-  yt-dlp --extract-audio --audio-format mp3 --audio-quality 0 "$1"
+  yt-dlp --extract-audio --embed-metadata --audio-format mp3 --audio-quality 0 -o "%(playlist_index)s-%(title)s === [%(id)s].%(ext)s" "${1}" > /dev/null &
   )
 }
 
@@ -39,7 +42,7 @@ function screen_read(){
 }
 
 function gdiff(){
-  set -euo pipefail
+  #set -euo pipefail
   # TODO check if there exists .git/
 
   if [[ ! -d .git/ ]]; then
