@@ -6,7 +6,16 @@ set expandtab
 set tabstop=2
 set shiftwidth=2
 
+set incsearch " true            -- search as characters are entered
+set ignorecase " true           -- ignore case in searches by default
+set smartcase " true            -- but make it case sensitive if an uppercase is entered
+
+
+lua require("custom-functions")
 lua require('plugins')
+lua require("maps")
+set termguicolors
+lua require'colorizer'.setup()
 
 " for buffers
 nnoremap gb :ls<CR>:b<Space>
