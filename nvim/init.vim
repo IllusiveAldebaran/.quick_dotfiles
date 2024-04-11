@@ -34,3 +34,7 @@ nnoremap gb :ls<CR>:b<Space>
 " nmap <C-s> <Plug>MarkdownPreview
 " nmap <M-s> <Plug>MarkdownPreviewStop
 " nmap <C-p> <Plug>MarkdownPreviewToggle
+
+" elsa plugin attempt
+let g:elsa_conceal = v:true
+set conceallevel=2
