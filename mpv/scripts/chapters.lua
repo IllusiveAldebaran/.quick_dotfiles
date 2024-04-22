@@ -28,10 +28,11 @@ SOFTWARE.
 local utils = require 'mp.utils'
 local msg = require 'mp.msg'
 local opts = require 'mp.options'
-local input = require 'mp.input'
 
--- can't pass the chapter number to the callback, so let's pass it through a global var
-local edited_chapter = 0
+package.path = mp.command_native({"expand-path", "~~/script-modules/?.lua;"}) .. package.path
+local user_input_module, input = pcall(require, "user-input-module")
+
+
 local chapters_modified = false
 
 
@@ -58,11 +59,9 @@ msg.debug("options:", utils.to_string(options))
 -- CHAPTER MANIPULATION --------------------------------------------------------
 
 
-local function change_title_callback(user_input)
-    local chapter_index = edited_chapter
-    input.terminate()
-    if user_input == nil then
-        msg.warn("no chapter title provided:")
+local function change_title_callback(user_input, err, chapter_index)
+    if user_input == nil or err ~= nil then
+        msg.warn("no chapter title provided:", err)
         return
     end
 
@@ -89,17 +88,24 @@ local function edit_chapter()
         return
     end
 
-    input.get({
-        prompt = "title of the chapter:",
-        submit = change_title_callback,
-        default_text = chapter_list[mpv_chapter_index + 1].title,
-        cursor_position = #(chapter_list[mpv_chapter_index + 1].title) + 1,
-    })
-
-    edited_chapter = mpv_chapter_index + 1
+    if not user_input_module then
+        msg.error("no mpv-user-input, can't get user input, install: https://github.com/CogentRedTester/mpv-user-input")
+        return
+    end
+    -- ask user for chapter title
+    -- (+1 because mpv indexes from 0, lua from 1)
+    input.get_user_input(change_title_callback, {
+        request_text = "title of the chapter:",
+        default_input = chapter_list[mpv_chapter_index + 1].title,
+        cursor_pos = #(chapter_list[mpv_chapter_index + 1].title) + 1,
+    }, mpv_chapter_index + 1)
 
     if options.pause_on_input then
         mp.set_property_bool("pause", true)
+        -- FIXME: for whatever reason osd gets hidden when we pause the
+        -- playback like that, workaround to make input prompt appear
+        -- right away without requiring mouse or keyboard action
+        mp.osd_message(" ", 0.1)
     end
 end
 
@@ -125,17 +131,23 @@ local function add_chapter()
     chapters_modified = true
 
     if options.ask_for_title then
-        input.get({
-            prompt = "title of the chapter:",
-            submit = change_title_callback,
-            default_text = options.placeholder_title .. chapter_index,
-            cursor_position = #(options.placeholder_title .. chapter_index) + 1,
-        })
-
-        edited_chapter = chapter_index
+        if not user_input_module then
+            msg.error("no mpv-user-input, can't get user input, install: https://github.com/CogentRedTester/mpv-user-input")
+            return
+        end
+        -- ask user for chapter title
+        input.get_user_input(change_title_callback, {
+            request_text = "title of the chapter:",
+            default_input = options.placeholder_title .. chapter_index,
+            cursor_pos = #(options.placeholder_title .. chapter_index) + 1,
+        }, chapter_index)
 
         if options.pause_on_input then
             mp.set_property_bool("pause", true)
+            -- FIXME: for whatever reason osd gets hidden when we pause the
+            -- playback like that, workaround to make input prompt appear
+            -- right away without requiring mouse or keyboard action
+            mp.osd_message(" ", 0.1)
         end
     end
 end
@@ -186,7 +198,7 @@ local function command_exists(command, ...)
         capture_stdout = true,
         capture_stderr = true,
         playback_only = false,
-        args = {"sh", "-c", "command -v -- " .. command}
+        args = {"sh", "-c", "command -v " .. command}
     })
 
     if process.status == 0 then
@@ -228,7 +240,7 @@ local function full_path()
             end
         end
     else -- unix
-        local command = command_exists("realpath", "--") or command_exists("readlink", "-f", "--") or command_exists("perl", "-MCwd", "-e", "print Cwd::realpath shift", "--")
+        local command = command_exists("realpath") or command_exists("readlink", "-f") or command_exists("perl", "-MCwd", "-e", "print Cwd::realpath shift")
 
         msg.debug("command:", utils.to_string(command))
 
@@ -265,7 +277,7 @@ local function mkdir(path)
     local args = nil
 
     if detect_os() == "unix" then
-        args = {"mkdir", "-p", "--", path}
+        args = {"mkdir", "-p", path}
     else
         args = {"powershell", "-NoProfile", "-Command", "mkdir", path}
     end
@@ -298,11 +310,6 @@ local function hash()
 
     msg.debug("hashing:", path)
 
-    local cmd = {
-        name = 'subprocess',
-        capture_stdout = true,
-        playback_only = false,
-    }
     local args = nil
 
     if detect_os() == "unix" then
@@ -312,16 +319,19 @@ local function hash()
             return
         end
         md5 = table.concat(md5, " ")
-        cmd["stdin_data"] = path
-        args = {"sh", "-c", md5 .. " | cut -d ' ' -f 1 | tr '[:lower:]' '[:upper:]'" }
+        args = {"sh", "-c", "printf %s " .. path .. " | " .. md5 .. " | cut -d' ' -f1 | tr '[:lower:]' '[:upper:]'" }
     else --windows
         -- https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/get-filehash?view=powershell-7.3
         local hash_command ="$s = [System.IO.MemoryStream]::new(); $w = [System.IO.StreamWriter]::new($s); $w.write(\"" .. path .. "\"); $w.Flush(); $s.Position = 0; Get-FileHash -Algorithm MD5 -InputStream $s | Select-Object -ExpandProperty Hash"
         args = {"powershell", "-NoProfile", "-Command", hash_command}
     end
-    cmd["args"] = args
-    msg.debug("hash cmd:", utils.to_string(cmd))
-    local process = mp.command_native(cmd)
+
+    local process = mp.command_native({
+        name = 'subprocess',
+        capture_stdout = true,
+        playback_only = false,
+        args = args,
+    })
 
     if process.status == 0 then
         local hash = process.stdout:gsub("%s+", "")
@@ -564,7 +574,9 @@ if options.autosave then
     mp.add_hook("on_unload", 50, function () write_chapters(false) end)
 end
 
-mp.add_hook("on_unload", 50, function () input.terminate() end)
+if user_input_module then
+    mp.add_hook("on_unload", 50, function () input.cancel_user_input() end)
+end
 
 
 -- BINDINGS --------------------------------------------------------------------
