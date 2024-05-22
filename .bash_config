@@ -10,8 +10,33 @@ export EDITOR="/bin/nvim"
 export HISTSIZE=2000000
 HISTIGNORE="&:ls:exit:pwd:clear"
 
+# customizing the prompt
+#PS1='\[\e[0;37;48;2;0;77;77m\][\[\u\[\e[2;32;48;2;0;77;77m\] \[\e[0;37;48;2;0;77;77m\]\h \W]\[\e[0;37m\]\$ ' 
+#PS1='\[\e[0;37;48;2;0;77;77m\][\[\u\[\e[2;32;48;2;0;77;77m\] \[\e[0;37;48;2;0;77;77m\]\h \W]\[\e[0;37m\]\$ ' 
+PS1='[\u\[\e[0;32m\] \[\e[0m\]\h \W]\$ '
+
 # allows to search forward with <C-s>
 stty -ixon
+
+# added by cargo once, changed because of Void Linux having a cargo package
+#if [[ -d "$HOME/.cargo/env" ]]; then
+#  . "$HOME/.cargo/env" 
+#fi
+# bash
+
+######
+#	The following used to manage XDG_RUNTIME_DIR and some DBUS_SESSION_BUS_ADDRESS
+#	But now I've enabled turnstile(d) and it manages this.
+#####
+#export XDG_RUNTIME_DIR=/tmp/xdg-runtime-$(id -u)
+#if [[ ! -d $XDG_RUNTIME_DIR ]]; then
+#  mkdir -p $XDG_RUNTIME_DIR
+#fi
+# Handle Audio
+#export $(dbus-launch) # this is supposed to run once but if uncommented runs too uch
+
+# start mpd (This is a decent way to launch recommended not just form one place btw)
+#[ ! -s ~/.config/mpd/pid ] && mpd
 
 # add local Rust path. Might be only path as far as I know.
 #export PATH="$PATH:${HOME}/.cargo/bin/" # oh this one already added?
@@ -21,18 +46,8 @@ PATH="$PATH:$HOME/.local/bin"
 PATH="$PATH:$HOME/All_Code_Folder/IntelFPGA_lite/quartus/bin"
 # Ruby Gems
 PATH="$PATH:/usr/lib/ruby/gems/3.2.0/bin"
-
-# customizing the prompt
-#PS1='\[\e[0;37;48;2;0;77;77m\][\[\u\[\e[2;32;48;2;0;77;77m\] \[\e[0;37;48;2;0;77;77m\]\h \W]\[\e[0;37m\]\$ ' 
-#PS1='\[\e[0;37;48;2;0;77;77m\][\[\u\[\e[2;32;48;2;0;77;77m\] \[\e[0;37;48;2;0;77;77m\]\h \W]\[\e[0;37m\]\$ ' 
-PS1='[\u\[\e[0;32m\] \[\e[0m\]\h \W]\$ '
-
-# added by cargo once
-if [[ -d "$HOME/.cargo/env" ]]; then
-  . "$HOME/.cargo/env" 
-fi
-# bash
-
+#Personal scripts
+PATH="$PATH:$HOME/.config/script-collection"
 
 if [[ ! -d ~/.config/script-collection ]]; then
   mkdir ~/.config/script-collection
@@ -41,7 +56,7 @@ fi
 # check if it already has scripts inside. Check if it is not empty.
 if ! ls ~/.config/script-collection/* &> /dev/null ; then
   if [[ -d ~/All_Code_Folder ]] && [[ -d ~/All_Code_Folder/bash_scripts ]]; then
-    seq=$(find ~/All_Code_Folder/bash_scripts/ -maxdepth 3 -type f -name '*.sh')
+    seq=$(find ~/All_Code_Folder/bash_scripts/ -mindepth 2 -maxdepth 3 -executable)
 
     for i in $seq; do
       ln -s $i ~/.config/script-collection/
@@ -75,7 +90,6 @@ if ! ls ~/.config/script-collection/* &> /dev/null ; then
   fi
 fi
 
-PATH="$PATH:$HOME/.config/script-collection"
 export MANPAGER='nvim +Man!'
 #export MANPAGER="less -R --use-color -Dd+r -Du+b"
 #MANPAGER="sh -c 'col -bx | bat -l man -p'" # bat
