@@ -35,6 +35,9 @@ map("n", "<leader>-", "<CMD>split<CR>")
 -- toggle neovim status line on or off (toggle status)
 map("n", "<leader>ts", ":lua ToggleStatusLine()<CR>")
 
+-- Open the dashboard
+map("n", "<leader>d", ":Dashboard<CR>")
+
 -- NeoTree
 map("n", "<leader>e", "<CMD>Neotree toggle<CR>")
 map("n", "<leader>o", "<CMD>Neotree focus<CR>")

@@ -7,18 +7,15 @@ return require("packer").startup(function(use)
 	-- Packer can manage itself
 	use("wbthomason/packer.nvim")
 
-  -- dashboard
-  use {
-    'nvimdev/dashboard-nvim',
-    event = 'VimEnter',
-    config = function()
-			-- require("configs.dashboard").setup()
-      require('dashboard').setup {
-      --   -- config
-      }
-    end,
-    requires = {'nvim-tree/nvim-web-devicons'}
-  }
+	-- dashboard
+	use({
+		"nvimdev/dashboard-nvim",
+		event = "VimEnter",
+		config = function()
+			require("configs.dashboard")
+		end,
+		requires = { "nvim-tree/nvim-web-devicons" },
+	})
 
 	-- hex color code display
 	use("ap/vim-css-color")
@@ -95,13 +92,13 @@ return require("packer").startup(function(use)
 	use({ "hrsh7th/cmp-buffer", after = "nvim-cmp" })
 
 	-- LSP diagnostics, code actions, and more via Lua.
-	-- use({
-	-- 	"jose-elias-alvarez/null-ls.nvim",
-	-- 	config = function()
-	-- 		require("configs.null-ls")
-	-- 	end,
-	-- 	requires = { "nvim-lua/plenary.nvim" },
-	-- })
+	use({
+		"jose-elias-alvarez/null-ls.nvim",
+		config = function()
+			require("configs.null-ls")
+		end,
+		requires = { "nvim-lua/plenary.nvim" },
+	})
 
 	-- Mason: Portable package manager
 	use({
@@ -209,23 +206,23 @@ return require("packer").startup(function(use)
 	-- Load on specific commands
 	use({ "tpope/vim-dispatch", opt = true, cmd = { "Dispatch", "Make", "Focus", "Start" } })
 
-  -- Load on an autocommand event
-  -- use {'andymass/vim-matchup', event = 'VimEnter'}
+	-- Load on an autocommand event
+	-- use {'andymass/vim-matchup', event = 'VimEnter'}
 
-  -- Load on a combination of conditions: specific filetypes or commands
-  -- Also run code after load (see the "config" key)
-  -- use {
-  --   'w0rp/ale',
-  --   ft = {'sh', 'zsh', 'bash', 'c', 'cpp', 'cmake', 'html', 'markdown', 'racket', 'vim', 'tex'},
-  --   cmd = 'ALEEnable',
-  --   config = 'vim.cmd[[ALEEnable]]'
-  -- }
+	-- Load on a combination of conditions: specific filetypes or commands
+	-- Also run code after load (see the "config" key)
+	-- use {
+	--   'w0rp/ale',
+	--   ft = {'sh', 'zsh', 'bash', 'c', 'cpp', 'cmake', 'html', 'markdown', 'racket', 'vim', 'tex'},
+	--   cmd = 'ALEEnable',
+	--   config = 'vim.cmd[[ALEEnable]]'
+	-- }
 
-  -- Plugins can have dependencies on other plugins
-  -- use {
-  --   'haorenW1025/completion-nvim',
-  --   opt = true,
-  --   requires = {{'hrsh7th/vim-vsnip', opt = true}, {'hrsh7th/vim-vsnip-integ', opt = true}}
+	-- Plugins can have dependencies on other plugins
+	-- use {
+	--   'haorenW1025/completion-nvim',
+	--   opt = true,
+	--   requires = {{'hrsh7th/vim-vsnip', opt = true}, {'hrsh7th/vim-vsnip-integ', opt = true}}
 	-- }
 
 	-- Plugins can also depend on rocks from luarocks.org:
