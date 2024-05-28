@@ -1,13 +1,37 @@
-#!/bin/bash
+#!/bin/bash --
 source /etc/bash_completion.d/*
+
+function math(){
+    rofi -show calc -modi calc -no-show-match -no-sort
+}
+function emoji(){
+    rofi -modi emoji -show emoji
+}
 
 function screenshot(){
     wayshot -s "$(slurp)" --stdout | wl-copy
-    #WAYSHOT_TMP="/tmp/wayshot-$(USER)"
-    #echo $WAYSHOT_TMP 
-    #wayshot -s "$(slurp)"
-    #cat $WAYSHOT_TMP | wl-copy;
-    #rm $WAYSHOT_TMP
+}
+
+# Move dir(s)/file and place a symbolic link in its place
+# https://unix.stackexchange.com/questions/228015/move-a-file-and-replace-it-by-a-symlink
+function ml(){
+  while [ $# -gt 1 ]; do
+    eval "target=\${$#}"
+    original="$1"
+    if [ -d "$target" ]; then
+      target="$target/${original##*/}"
+    fi
+    mv -- "$original" "$target"
+    case "$original" in
+      */*)
+        case "$target" in
+          /*) :;;
+          *) target="$(cd -- "$(dirname -- "$target")" && pwd)/${target##*/}"
+        esac
+    esac
+    ln -s -- "$target" "$original"
+    shift
+  done
 }
 
 # Needs to be called with quotation marks around url, and only call with one url at a time followed by genres
@@ -23,22 +47,19 @@ function add-song(){
       dir0="$2"
   fi
 
-  printf "Putting song in ${dir0} directory\n"
+  printf "Putting song in %s directory\n" "${dir0}"
 
   (
-  cd ~/Audio/Music/$dir0
+  cd ~/Audio/Music/"$dir0" && notify-send "Adding Song"|| notify-send "Failed"
   yt-dlp --extract-audio --embed-metadata --audio-format mp3 --audio-quality 0 -o "%(playlist_index)s-%(title)s === [%(id)s].%(ext)s" "${1}" > /dev/null &
   )
 }
 
 function screen_read(){
-    filetmp=$(mktemp -t wayshot-XXXX.png)
-    wayshot -s "$(slurp)" 
-    mv [0-9]*-wayshot.png $filetmp
-    tesseract-ocr $filetmp stdout -l eng | wl-copy
-    rm $filetmp
-
-
+    filetmp=$(mktemp wayshot-XXXX.png)
+    trap 'rm "$filetmp"' EXIT
+    wayshot -s "$(slurp)" -f "$filetmp"
+    tesseract-ocr "$filetmp" stdout -l eng | wl-copy
 }
 
 function gdiff(){
@@ -71,7 +92,7 @@ function gdiff(){
   while [[ -n $stay ]]; do
     #
     #for i in "${commit_arr[@]}"; do
-    git diff --color ${baseC} ${recentC} | less -R
+    git diff --color "${baseC}" "${recentC}" | less -R
 
     
     # choose to change start and or end commits
@@ -93,7 +114,7 @@ function gdiff(){
 
 # requires browser-sync, installed with npm
 function sync-html(){
-  browser-sync start --server --files $1 --startPath $1
+  browser-sync start --server --files "$1" --startPath "$1"
 }
 
 function watch_wifi(){
@@ -105,7 +126,7 @@ function ssh(){
   TERM=xterm-256color;
   if [[ -z $SSH_AUTH_SOCK ]]; then
     eval "$(ssh-agent -s)" > /dev/null
-    ssh-add ~/.ssh/id_rsa 2> /dev/null
+    ssh-add ~/.ssh/id_rsa 2> /dev/null # github uses this one, but using command without arguments tries default keys anyways, id_{rsa,ed25519,ecdsa,etc...}
   fi
-  command ssh "$@"
+  command ssh -A "$@"
 }
