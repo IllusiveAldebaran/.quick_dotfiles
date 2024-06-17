@@ -155,6 +155,17 @@ return require("packer").startup(function(use)
 		end,
 	})
 
+	-- AsciiDoc Preview
+	use({
+		"tigion/nvim-asciidoc-preview",
+		run = "cd server && npm install",
+		config = function()
+			require("asciidoc-preview").setup({
+				-- Add user configuration here
+			})
+		end,
+	})
+
 	-- Auto pairs
 	use({
 		"windwp/nvim-autopairs",
