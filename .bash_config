@@ -8,12 +8,13 @@ source $HOME/.config/.bash_bindings # bindings
 export EDITOR="/bin/nvim"
 
 export HISTSIZE=2000000
-HISTIGNORE="&:ls:exit:pwd:clear"
+HISTIGNORE=" *:&:ls:exit:pwd:clear"
 
-# customizing the prompt
+# customizing the prompts
 #PS1='\[\e[0;37;48;2;0;77;77m\][\[\u\[\e[2;32;48;2;0;77;77m\] \[\e[0;37;48;2;0;77;77m\]\h \W]\[\e[0;37m\]\$ ' 
 #PS1='\[\e[0;37;48;2;0;77;77m\][\[\u\[\e[2;32;48;2;0;77;77m\] \[\e[0;37;48;2;0;77;77m\]\h \W]\[\e[0;37m\]\$ ' 
 PS1='[\u\[\e[0;32m\] \[\e[0m\]\h \W]\$ '
+SUDO_PROMPT=$'\a[sudo] password: '
 
 # allows to search forward with <C-s>
 stty -ixon
