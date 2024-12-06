@@ -3,6 +3,7 @@
 
 source $HOME/.config/.bash_functions # and custom autocompletes
 source $HOME/.config/.bash_aliases # aliases 
+source $HOME/.config/.bash_completions # nice completions 
 source $HOME/.config/.bash_bindings # bindings 
 
 export EDITOR="/bin/nvim"

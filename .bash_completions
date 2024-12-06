@@ -1,0 +1,2 @@
+complete -W 'www.google.com www.archlinux.org scc.sdsc.edu' ping
+complete -W 'www.google.com www.archlinux.org scc.sdsc.edu' gping
