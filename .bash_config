@@ -14,7 +14,38 @@ HISTIGNORE=" *:&:ls:exit:pwd:clear"
 # customizing the prompts
 #PS1='\[\e[0;37;48;2;0;77;77m\][\[\u\[\e[2;32;48;2;0;77;77m\] \[\e[0;37;48;2;0;77;77m\]\h \W]\[\e[0;37m\]\$ ' 
 #PS1='\[\e[0;37;48;2;0;77;77m\][\[\u\[\e[2;32;48;2;0;77;77m\] \[\e[0;37;48;2;0;77;77m\]\h \W]\[\e[0;37m\]\$ ' 
-PS1='[\u\[\e[0;32m\] \[\e[0m\]\h \W]\$ '
+D_LOGO=''
+case $(awk -F= '{if ($1 == "NAME"){gsub(/"/, "", $2); print $2}}' /etc/os-release) in
+  "Arch Linux")
+    D_LOGO='\[\e[0;96m\]󰣇\[\e[0m\]'
+    ;;
+  "Void Linux")
+    D_LOGO="\[\e[0;32m\] \[\e[0m\]"
+    ;;
+  "CentOS Linux")
+    D_LOGO="\[\e[0;35m\] \[\e[0m\]"
+    ;;
+  "Linux Mint")
+    D_LOGO="\[\e[0;46m\] \[\e[0m\]"
+    ;;
+  "Ubuntu")
+    D_LOGO="\[\e[0;208m\] \[\e[0m\]"
+    ;;
+  "Debian GNU/Linux")
+    D_LOGO="\[\e[0;52m\]\[\e[0m\]"
+    ;;
+  "Rocky Linux")
+    D_LOGO="\[\e[0;28m\] \[\e[0m\]"
+    ;;
+  "POP! OS")
+    D_LOGO="\[\e[0;27m\] \[\e[0m\]"
+    ;;
+  *)
+    D_LOGO=''
+    ;;
+esac
+PS1="[\u${D_LOGO}\h \W]\$ "
+
 SUDO_PROMPT=$'\a[sudo] password: '
 
 # allows to search forward with <C-s>
@@ -92,6 +123,14 @@ if ! ls ~/.config/script-collection/* &> /dev/null ; then
   fi
 fi
 
-export MANPAGER='nvim +Man!'
+MANPAGER='nvim +Man!'
 #export MANPAGER="less -R --use-color -Dd+r -Du+b"
 #MANPAGER="sh -c 'col -bx | bat -l man -p'" # bat
+
+
+# devkitpro variables
+DEVKITPRO=/opt/devkitpro
+DEVKITARM=/opt/devkitpro/devkitARM
+DEVKITPPC=/opt/devkitpro/devkitPPC
+
+
