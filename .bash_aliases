@@ -1,12 +1,13 @@
 alias fucking="sudo"
 alias diary="nvim ~/.config/diary"
 alias gits="cd /home/lowell/Documents/gits"
+alias sus="systemctl suspend"
 #
 # Add color aliases
 alias grep="grep --color"
 alias ls='ls --color=auto'
 
-alias lsblk='lsblk -o NAME,MAJ:MIN,SIZE,TYPE,FSTYPE,FSUSE%,PARTLABEL,LABEL,MOUNTPOINTS,SERIAL,MODEL'
+alias lsblk='lsblk -o NAME,MAJ:MIN,SIZE,FSUSE%,FSAVAIL,TYPE,FSTYPE,PARTLABEL,LABEL,MOUNTPOINTS,SERIAL,MODEL'
 alias suser="sudo su -l \$(ls /home/ | fzf)"
 
 # Set certain configuration files

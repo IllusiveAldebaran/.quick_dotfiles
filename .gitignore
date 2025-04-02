@@ -1,6 +1,12 @@
 /*
+!rofi/
 !tmux/
 !infokey
 !nvim/
+!htop/
+!mpv/
+!zathura/
 !.gitignore
 !.bash_*
+!README.md
+!vifm/

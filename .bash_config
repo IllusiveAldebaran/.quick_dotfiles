@@ -19,7 +19,7 @@ case $(awk -F= '{if ($1 == "NAME"){gsub(/"/, "", $2); print $2}}' /etc/os-releas
   "Arch Linux")
     D_LOGO='\[\e[0;96m\]󰣇\[\e[0m\]'
     ;;
-  "Void Linux")
+  "Void")
     D_LOGO="\[\e[0;32m\] \[\e[0m\]"
     ;;
   "CentOS Linux")
@@ -35,7 +35,7 @@ case $(awk -F= '{if ($1 == "NAME"){gsub(/"/, "", $2); print $2}}' /etc/os-releas
     D_LOGO="\[\e[0;52m\]\[\e[0m\]"
     ;;
   "Rocky Linux")
-    D_LOGO="\[\e[0;28m\] \[\e[0m\]"
+    D_LOGO="\[\e[0;32m\] \[\e[0m\]"
     ;;
   "POP! OS")
     D_LOGO="\[\e[0;27m\] \[\e[0m\]"
@@ -72,7 +72,7 @@ stty -ixon
 #[ ! -s ~/.config/mpd/pid ] && mpd
 
 # add local Rust path. Might be only path as far as I know.
-#export PATH="$PATH:${HOME}/.cargo/bin/" # oh this one already added?
+export PATH="$PATH:${HOME}/.cargo/bin/" # oh this one already added?
 # add Ruby paths. Second is empty but whatever
 #export PATH="$PATH:/usr/lib/ruby/gems/3.1.0/bin/:$PWD/.local/share/gem/ruby/3.1.0"
 PATH="$PATH:$HOME/.local/bin"
