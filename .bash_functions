@@ -1,5 +1,7 @@
 #!/bin/bash --
-source /etc/bash_completion.d/*
+if [[ -d /etc/bash_completion.d ]] && ls /etc/bash_completion.d/* &>/dev/null; then 
+  source /etc/bash_completion.d/*
+fi
 
 function math(){
     rofi -show calc -modi calc -no-show-match -no-sort
