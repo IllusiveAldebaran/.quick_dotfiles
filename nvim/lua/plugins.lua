@@ -8,14 +8,14 @@ return require("packer").startup(function(use)
 	use("wbthomason/packer.nvim")
 
 	-- dashboard
-	use({
-		"nvimdev/dashboard-nvim",
-		event = "VimEnter",
-		config = function()
-			require("configs.dashboard")
-		end,
-		requires = { "nvim-tree/nvim-web-devicons" },
-	})
+	-- use({
+	-- 	"nvimdev/dashboard-nvim",
+	-- 	event = "VimEnter",
+	-- 	config = function()
+	-- 		require("configs.dashboard")
+	-- 	end,
+	-- 	requires = { "nvim-tree/nvim-web-devicons" },
+	-- })
 
 	-- hex color code display
 	use("ap/vim-css-color")
@@ -61,35 +61,27 @@ return require("packer").startup(function(use)
 		requires = { { "nvim-lua/plenary.nvim" } },
 	})
 
-	-- LSP
-	use({
-		"neovim/nvim-lspconfig",
-		config = function()
-			require("configs.lsp")
-		end,
-	})
-
-	use("onsails/lspkind-nvim")
-	use({
-		"L3MON4D3/LuaSnip",
-		-- follow latest release.
-		tag = "v<CurrentMajor>.*",
-	})
+	-- use("onsails/lspkind-nvim")
+	-- use({
+	-- 	"L3MON4D3/LuaSnip",
+	-- --- follow latest release.
+	-- 	tag = "v<CurrentMajor>.*",
+	-- })
 
 	-- cmp: Autocomplete
-	use({
-		"hrsh7th/nvim-cmp",
-		event = "InsertEnter",
-		config = function()
-			require("configs.cmp")
-		end,
-	})
+	--use({
+	--	"hrsh7th/nvim-cmp",
+	--	event = "InsertEnter",
+	--	config = function()
+	--		require("configs.cmp")
+	--	end,
+	--})
 
-	use("hrsh7th/cmp-nvim-lsp")
+	--use("hrsh7th/cmp-nvim-lsp")
 
-	use({ "hrsh7th/cmp-path", after = "nvim-cmp" })
+	--use({ "hrsh7th/cmp-path", after = "nvim-cmp" })
 
-	use({ "hrsh7th/cmp-buffer", after = "nvim-cmp" })
+	--use({ "hrsh7th/cmp-buffer", after = "nvim-cmp" })
 
 	-- LSP diagnostics, code actions, and more via Lua.
 	use({
@@ -100,20 +92,25 @@ return require("packer").startup(function(use)
 		requires = { "nvim-lua/plenary.nvim" },
 	})
 
+
+
+  -- nvim-lspconfig... legacy thing? dunno, read later.
 	-- Mason: Portable package manager
-	use({
-		"williamboman/mason.nvim",
+  -- + lsp from mason
+  use {
+    "williamboman/mason.nvim",
 		config = function()
 			require("mason").setup()
 		end,
-	})
-
-	use({
-		"williamboman/mason-lspconfig.nvim",
+    "williamboman/mason-lspconfig.nvim",
+    "neovim/nvim-lspconfig",
 		config = function()
-			require("configs.mason-lsp")
+			require("configs.lsp")
 		end,
-	})
+    config = function()
+      require("configs.mason-lsp")
+    end,
+  }
 
 	-- File manager
 	use({

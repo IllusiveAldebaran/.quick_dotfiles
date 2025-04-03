@@ -20,7 +20,7 @@ case $(awk -F= '{if ($1 == "NAME"){gsub(/"/, "", $2); print $2}}' /etc/os-releas
     D_LOGO='\[\e[0;96m\]󰣇\[\e[0m\]'
     ;;
   "Void")
-    D_LOGO="\[\e[0;32m\] \[\e[0m\]"
+    D_LOGO="\[\e[38;5;208m\] \[\e[0m\]"
     ;;
   "CentOS Linux")
     D_LOGO="\[\e[0;35m\] \[\e[0m\]"
@@ -37,8 +37,8 @@ case $(awk -F= '{if ($1 == "NAME"){gsub(/"/, "", $2); print $2}}' /etc/os-releas
   "Rocky Linux")
     D_LOGO="\[\e[0;32m\] \[\e[0m\]"
     ;;
-  "POP! OS")
-    D_LOGO="\[\e[0;27m\] \[\e[0m\]"
+  "Pop!_OS")
+    D_LOGO="\[\e[38;2;30;144;255m \[\e[0m\]"
     ;;
   *)
     D_LOGO=''
