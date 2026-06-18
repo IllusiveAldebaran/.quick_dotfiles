@@ -35,7 +35,7 @@ vim.opt.compatible = false
 
 vim.g.vimwiki_list = {
 	{path = "~/Documents/diary"},
-	{path = "~/Documents/Sheet-Music"},
+	{path = "~/Documents/Music"},
 	{path = "~/Documents/PCards"},
 	{path = "~/Documents/Work"},
 	{path = "~/Documents/bowtie"}

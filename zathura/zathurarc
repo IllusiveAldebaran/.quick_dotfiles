@@ -2,7 +2,7 @@
 set recolor-lightcolor \#222222
 set statusbar-bg	\#404552
 # turn off status bar and other gui elements
-#set guioptions none
+set guioptions none
 #set inputbar-bg	\#404552
 #set default-bg \#2f343f
 #set recolor-keephue
@@ -14,3 +14,6 @@ map K scroll full-up
 
 map <C-j> navigate next
 map <C-k> navigate previous
+
+set window-width 1530
+set window-height 800
