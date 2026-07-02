@@ -38,7 +38,7 @@ case $(awk -F= '{if ($1 == "NAME"){gsub(/"/, "", $2); print $2}}' /etc/os-releas
     D_LOGO="\[\e[0;32m\] \[\e[0m\]"
     ;;
   "Pop!_OS")
-    D_LOGO="\[\e[38;2;30;144;255m \[\e[0m\]"
+    D_LOGO="\[\e[38;2;30;144;255m\] \[\e[0m\]"
     ;;
   *)
     D_LOGO=''
@@ -48,7 +48,7 @@ esac
 #check Gentoo
 case $(awk -F= '{if ($1 == "PRETTY_NAME"){gsub(/"/, "", $2); print $2}}' /etc/os-release) in
   "'Trolls Linux'")
-    D_LOGO="\[\e[38;2;84;72;122m \[\e[0m\]"
+    D_LOGO="\[\e[38;2;84;72;122m\] \[\[\e[0m\]"
     ;;
   *)
     ;;
@@ -143,3 +143,9 @@ DEVKITARM=/opt/devkitpro/devkitARM
 DEVKITPPC=/opt/devkitpro/devkitPPC
 
 
+
+## Enable nix
+#if [ -z "$NIX_USER_CHROOT" ]; then
+#    export NIX_USER_CHROOT=1
+#    exec nix-user-chroot ~/.nix bash -l
+#fi
