@@ -129,6 +129,9 @@ function ssh(){
   if [[ -z $SSH_AUTH_SOCK ]]; then
     eval "$(ssh-agent -s)" > /dev/null
     ssh-add ~/.ssh/id_rsa 2> /dev/null # github uses this one, but using command without arguments tries default keys anyways, id_{rsa,ed25519,ecdsa,etc...}
+    ssh-add ~/.ssh/id_ed25519 2> /dev/null # github uses this one, but using command without arguments tries default keys anyways, id_{rsa,ed25519,ecdsa,etc...}
+    #ssh-add ~/.ssh/id_fpga 2> /dev/null # github uses this one, but using command without arguments tries default keys anyways, id_{rsa,ed25519,ecdsa,etc...}
+    #ssh-add ~/.ssh/id_sdsc_admin 2> /dev/null # github uses this one, but using command without arguments tries default keys anyways, id_{rsa,ed25519,ecdsa,etc...}
   fi
   command ssh -A "$@"
 }

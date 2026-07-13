@@ -1,6 +1,28 @@
 
 # #!TODO: Get stuff from git
 
+# add local Rust path. Might be only path as far as I know.
+export PATH="$PATH:${HOME}/.cargo/bin/" # oh this one already added?
+# add Ruby paths. Second is empty but whatever
+#export PATH="$PATH:/usr/lib/ruby/gems/3.1.0/bin/:$PWD/.local/share/gem/ruby/3.1.0"
+PATH="$PATH:$HOME/.local/bin"
+PATH="$PATH:$HOME/All_Code_Folder/IntelFPGA_lite/quartus/bin"
+# Ruby Gems
+PATH="$PATH:/usr/lib/ruby/gems/3.2.0/bin"
+#Personal scripts
+PATH="$PATH:$HOME/.config/script-collection"
+
+
+# Enabling nix stuff (particularly neovim)
+if [ -z "$IN_NIX_CHROOT" ]; then
+  export IN_NIX_CHROOT=1
+  nix-user-chroot ~/.nix bash --login
+fi
+
+if [ -f ~/.nix-profile/etc/profile.d/nix.sh ]; then
+  source ~/.nix-profile/etc/profile.d/nix.sh
+fi
+
 source $HOME/.config/.bash_functions # and custom autocompletes
 source $HOME/.config/.bash_aliases # aliases 
 source $HOME/.config/.bash_completions # nice completions 
@@ -80,17 +102,6 @@ stty -ixon
 # start mpd (This is a decent way to launch recommended not just form one place btw)
 #[ ! -s ~/.config/mpd/pid ] && mpd
 
-# add local Rust path. Might be only path as far as I know.
-export PATH="$PATH:${HOME}/.cargo/bin/" # oh this one already added?
-# add Ruby paths. Second is empty but whatever
-#export PATH="$PATH:/usr/lib/ruby/gems/3.1.0/bin/:$PWD/.local/share/gem/ruby/3.1.0"
-PATH="$PATH:$HOME/.local/bin"
-PATH="$PATH:$HOME/All_Code_Folder/IntelFPGA_lite/quartus/bin"
-# Ruby Gems
-PATH="$PATH:/usr/lib/ruby/gems/3.2.0/bin"
-#Personal scripts
-PATH="$PATH:$HOME/.config/script-collection"
-
 if [[ ! -d ~/.config/script-collection ]]; then
   mkdir ~/.config/script-collection
 fi
@@ -143,9 +154,6 @@ DEVKITARM=/opt/devkitpro/devkitARM
 DEVKITPPC=/opt/devkitpro/devkitPPC
 
 
+# npm local
+export PATH=~/.npm-global/bin:$PATH
 
-## Enable nix
-#if [ -z "$NIX_USER_CHROOT" ]; then
-#    export NIX_USER_CHROOT=1
-#    exec nix-user-chroot ~/.nix bash -l
-#fi
