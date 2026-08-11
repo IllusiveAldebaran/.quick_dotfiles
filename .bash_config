@@ -23,6 +23,16 @@ if [ -f ~/.nix-profile/etc/profile.d/nix.sh ]; then
   source ~/.nix-profile/etc/profile.d/nix.sh
 fi
 
+# Enabling nix stuff (particularly neovim)
+#if [ -z "$IN_NIX_CHROOT" ] && [ -d "$HOME/.nix" ]; then
+#  export IN_NIX_CHROOT=1
+#  exec nix-user-chroot "$HOME/.nix" bash
+#fi
+#
+#if [ -f "$HOME/.nix-profile/etc/profile.d/nix.sh" ]; then
+#  source "$HOME/.nix-profile/etc/profile.d/nix.sh"
+#fi
+
 source $HOME/.config/.bash_functions # and custom autocompletes
 source $HOME/.config/.bash_aliases # aliases 
 source $HOME/.config/.bash_completions # nice completions 
