@@ -16,7 +16,15 @@ PATH="$PATH:$HOME/.config/script-collection"
 # Enabling nix stuff (particularly neovim)
 if [ -z "$IN_NIX_CHROOT" ]; then
   export IN_NIX_CHROOT=1
-  nix-user-chroot ~/.nix bash --login
+  
+  if ! command -v nix-user-chroot >/dev/null; then
+    echo "nix-user-chroot not found, running bootstrap..."
+    bash "$HOME/.config/nix/nix-bootstrap.sh"
+  fi
+
+  if [ -d "$HOME/.nix" ]; then
+    nix-user-chroot "$HOME/.nix" bash --login
+  fi
 fi
 
 if [ -f ~/.nix-profile/etc/profile.d/nix.sh ]; then
