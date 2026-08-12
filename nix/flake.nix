@@ -42,6 +42,8 @@
         shellcheck
         fastfetch
         cmatrix
+        nodejs
+        tree-sitter
       ];
 
       # Tag on server specific packages... just use #common if you can
