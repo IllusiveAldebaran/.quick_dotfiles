@@ -160,6 +160,31 @@ require("lazy").setup({
     "williamboman/mason.nvim",
     build = ":MasonUpdate",
     config = function()
+      -- WORKAROUND: $HOME lives on BeeGFS here, which does not honor POSIX
+      -- rename()-over-an-existing-empty-directory semantics. Mason's
+      -- installer relies on that: it mkdir's the destination, then renames
+      -- staging -> destination (mason-core/installer/context/init.lua,
+      -- promote_cwd). Mason's own authors anticipated filesystems that
+      -- reject that and wrote a fallback (rmdir the empty destination,
+      -- retry the rename) -- but it never fires, because
+      -- mason-core/fs.lua's sync `rename()` calls vim.loop.fs_rename
+      -- without checking its (nil, err) return, so the failure is silently
+      -- swallowed instead of raising and pcall() never sees it fail.
+      --
+      -- Patch it to actually raise on failure, so mason's existing
+      -- rmdir+retry fallback runs the way it was designed to. This fixes
+      -- installs in place under $HOME, no relocation needed.
+      local fs = require("mason-core.fs")
+      local raw_uv_rename = (vim.uv or vim.loop).fs_rename
+      fs.sync.rename = function(path, new_path)
+        local ok, err, err_name = raw_uv_rename(path, new_path)
+        if not ok then
+          error(
+            ("mason: fs_rename(%s -> %s) failed: %s: %s"):format(path, new_path, err_name or "?", err or "unknown")
+          )
+        end
+      end
+
       require("mason").setup()
     end,
   },
