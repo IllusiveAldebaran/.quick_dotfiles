@@ -14,7 +14,11 @@
   outputs = { self, nixpkgs }:
     let
       system = "x86_64-linux"; # TODO: test "aarch64-linux"
-      pkgs = import nixpkgs { inherit system; };
+      pkgs = import nixpkgs {
+        inherit system;
+        # claude-code necessary
+        config.allowUnfree = true;
+      };
 
       common = with pkgs; [
         ripgrep
@@ -44,6 +48,7 @@
         cmatrix
         nodejs
         tree-sitter
+        claude-code # now we're vibing (im kms)
       ];
 
       # Tag on server specific packages... just use #common if you can
