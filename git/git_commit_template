@@ -1,0 +1,23 @@
+# <type>(<scope>): <short summary>
+#
+# [Optional body: why the change was made, context, background, rationale]
+#
+# Scope (optional): what module or component is affected (e.g., api, login, parser)
+#
+# [Optional footer: references to issues, breaking changes, co-authors]
+
+#
+#✨ feat: A new feature
+#🐛 fix: A bug fix
+#📚 docs: Documentation only changes
+#🎨 style: Code style change (formatting, spacing, no logic impact)
+#♻️ refactor: Code change that neither fixes a bug nor adds a feature
+#⚡️ perf: Performance improvement
+#✅ test: Adding or fixing tests
+#🔧 chore: Build process or auxiliary tool changes
+#🏗 build: Changes affecting build system or dependencies
+#⚙️ ci: Continuous integration related
+#   Footer (optional):
+#💥 BREAKING CHANGE: describe what and why
+#🔗 Resolves: #123, Related: #456
+#👥 Co-authored-by: Name <email>
