@@ -2,8 +2,8 @@
 	ui = true
 	email = home@mail.com
 [user]
-	email = ffgutierrez@ucsd.edu
-	name = francisco
+	email = frank@supercomput.ing
+	name = Frank
 [init]
 	defaultBranch = master
 [core]

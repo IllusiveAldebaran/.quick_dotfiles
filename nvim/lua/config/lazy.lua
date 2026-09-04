@@ -127,10 +127,16 @@ require("lazy").setup({
     lazy = false,
     build = ":TSUpdate",
     config = function()
+      vim.filetype.add({
+        extension = {
+          hip = "cuda",
+        },
+      })
       require("nvim-treesitter").setup()
       require("nvim-treesitter").install({
         "bash",
         "c",
+        "cuda",
         "diff",
         "html",
         "javascript",
