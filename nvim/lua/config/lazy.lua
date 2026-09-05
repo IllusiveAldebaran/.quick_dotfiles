@@ -334,4 +334,8 @@ require("lazy").setup({
       },
     },
   },
+  -- Icons (used by lualine, alpha, etc.)
+  {
+    "krady21/compiler-explorer.nvim",
+  },
 })

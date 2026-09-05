@@ -24,6 +24,8 @@
         ripgrep
         fd
         fzf
+        gzip
+        _7zip-zstd
         htop
         apptainer
         cargo
